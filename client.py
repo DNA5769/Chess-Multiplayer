@@ -11,8 +11,9 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
+DARK_GREEN = (51, 102, 0)
 BLUE = (0, 0, 255)
-BLOCK_COLORS = (WHITE, BLACK)
+BLOCK_COLORS = (WHITE, DARK_GREEN)
 
 ## initialize pygame and create window
 pygame.init()
@@ -21,16 +22,27 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Chess Multiplayer")
 clock = pygame.time.Clock()     ## For syncing the FPS
 
-def draw(screen):
+def draw(screen, g):
   # Draws board
   for i in range(8):
     block_color_pointer = i%2
     for j in range(8):
       pygame.draw.rect(screen, BLOCK_COLORS[block_color_pointer], pygame.Rect(i*BLOCK, j*BLOCK, BLOCK, BLOCK))
-      block_color_pointer = (block_color_pointer+1)%2 
+      block_color_pointer = (block_color_pointer+1)%2
+
+  # Draws Pieces
+  for i in range(8):
+    for j in range(8):
+      piece = g.board[i][j]
+      if piece is not None:
+        picture = pygame.image.load(piece.img)
+        picture = pygame.transform.scale(picture, (BLOCK, BLOCK))
+
+        screen.blit(picture, (piece.pos[1]*BLOCK, piece.pos[0]*BLOCK))
 
 ## Game loop
 running = True
+g = Game()
 while running:
     #1 Process input/events
     clock.tick(FPS)     ## will make the loop run at the same speed all the time
@@ -42,7 +54,7 @@ while running:
     #2 Draw/render
     screen.fill(BLACK)
 
-    draw(screen)
+    draw(screen, g)
 
     pygame.display.update()       
 

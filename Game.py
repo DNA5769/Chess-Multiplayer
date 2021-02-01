@@ -1,8 +1,8 @@
-from Pawn import Pawn
+from pieces.Pawn import Pawn
 
 class Game:
   def __init__(self):
-    self.board = getBoard()
+    self.board = self.getBoard()
 
   def getBoard(self):
     return [
