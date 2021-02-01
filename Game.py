@@ -20,3 +20,15 @@ class Game:
       [Pawn(6, c, 'W') for c in range(8)],
       [Rook(7, 0, 'W'), Knight(7, 1, 'W'), Bishop(7, 2, 'W'), Queen('W'), King('W'), Bishop(7, 5, 'W'), Knight(7, 6, 'W'), Rook(7, 7, 'W')],
     ]
+
+  def getPossibleMoves(self, r, c):
+    moves = self.board[r][c].getPossibleMoves(self.board)
+    return moves
+
+  def move(self, piece, target):
+    self.board[target[0]][target[1]] = self.board[piece[0]][piece[1]]
+    self.board[target[0]][target[1]].pos = target
+    self.board[piece[0]][piece[1]] = None
+
+    if type(self.board[target[0]][target[1]]) == Pawn and abs(target[0]-piece[0]) == 2:
+      self.board[target[0]][target[1]].first = False

@@ -22,7 +22,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Chess Multiplayer")
 clock = pygame.time.Clock()     ## For syncing the FPS
 
-def draw(screen, g, selected):
+def draw(screen, g, selected, moves):
   # Draws board
   for i in range(8):
     block_color_pointer = i%2
@@ -44,11 +44,17 @@ def draw(screen, g, selected):
   if selected is not None:
     pygame.draw.rect(screen, RED, pygame.Rect(selected[1]*BLOCK, selected[0]*BLOCK, BLOCK, BLOCK), 2)
 
+  # Moves
+  for pos in moves:
+    pygame.draw.rect(screen, BLUE, pygame.Rect(pos[1]*BLOCK, pos[0]*BLOCK, BLOCK, BLOCK), 2)
+
+
 ## Game loop
 running = True
 g = Game()
 color = 'W'
 selected = None
+moves = []
 while running:
     #1 Process input/events
     clock.tick(FPS)     ## will make the loop run at the same speed all the time
@@ -60,18 +66,25 @@ while running:
         # handle MOUSEBUTTONDOWN
         if event.type == pygame.MOUSEBUTTONDOWN:
           pos = pygame.mouse.get_pos()
+          c, r = pos[0]//BLOCK, pos[1]//BLOCK
 
-          if selected is None:
-            c, r = pos[0]//BLOCK, pos[1]//BLOCK
-            if g.board[r][c] is not None and g.board[r][c].color == color:
-              selected = (r, c)
+          if (r, c) in moves:
+            g.move(selected, (r, c))
+            color = 'B' if color == 'W' else 'W'
+
+            selected = None
+            moves = []
+          elif g.board[r][c] is not None and g.board[r][c].color == color:
+            selected = (r, c)
+            moves = g.getPossibleMoves(r, c)
           else:
             selected = None
+            moves = []
 
     #2 Draw/render
     screen.fill(BLACK)
 
-    draw(screen, g, selected)
+    draw(screen, g, selected, moves)
 
     pygame.display.update()       
 
