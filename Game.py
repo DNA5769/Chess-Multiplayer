@@ -8,6 +8,7 @@ from pieces.Rook import Rook
 class Game:
   def __init__(self):
     self.board = self.getBoard()
+    self.turn = 'W'
 
   def getBoard(self):
     return [
@@ -29,6 +30,8 @@ class Game:
     self.board[target[0]][target[1]] = self.board[piece[0]][piece[1]]
     self.board[target[0]][target[1]].pos = target
     self.board[piece[0]][piece[1]] = None
+
+    self.turn = 'B' if self.turn == 'W' else 'W'
 
     if type(self.board[target[0]][target[1]]) == Pawn and abs(target[0]-piece[0]) == 2:
       self.board[target[0]][target[1]].first = False

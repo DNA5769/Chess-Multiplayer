@@ -55,10 +55,10 @@ def draw(screen, g, selected, moves):
 ## Game loop
 running = True
 g = Game()
-color = 'W'
 selected = None
 moves = []
 while running:
+    color = g.turn # Change when moving to multiplayer
     #1 Process input/events
     clock.tick(FPS)     ## will make the loop run at the same speed all the time
     for event in pygame.event.get():        # gets all the events which have occured till now and keeps tab of them.
@@ -73,7 +73,6 @@ while running:
 
           if (r, c) in moves:
             g.move(selected, (r, c))
-            color = 'B' if color == 'W' else 'W'
 
             selected = None
             moves = []
