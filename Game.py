@@ -38,17 +38,8 @@ class Game:
     self.board[target[0]][target[1]].pos = target
     self.board[piece[0]][piece[1]] = None
 
-    # Find own King
-    found = False
-    for row in self.board:
-      if found:
-        break
-
-      for col in row:
-        if col is not None and type(col) == King and col.color == temp_piece.color:
-          king = col
-          found = True
-          break
+    # Find our king
+    king = self.getKing(temp_piece.color)
 
     # Check if king in danger
     legal = True
@@ -66,12 +57,37 @@ class Game:
 
     return legal
 
+  def getKing(self, color):
+    for row in self.board:
+      for col in row:
+        if col is not None and type(col) == King and col.color == color:
+          return col
+
   def move(self, piece, target):
     self.board[target[0]][target[1]] = self.board[piece[0]][piece[1]]
     self.board[target[0]][target[1]].pos = target
     self.board[piece[0]][piece[1]] = None
 
     self.turn = 'B' if self.turn == 'W' else 'W'
+
+    # Find enemy King
+    king = self.getKing(self.turn)
+
+    # Check if king in danger
+    check = False
+    for row in self.board:
+      if check:
+        break
+
+      for col in row:
+        if col is not None and col.color != self.turn and king.pos in col.getPossibleMoves(self.board):
+          check = True
+          break
+
+    if check:
+      self.state = -1 if self.turn == 'W' else 1
+    else:
+      self.state = 0
 
     if type(self.board[target[0]][target[1]]) == Pawn and abs(target[0]-piece[0]) == 2:
       self.board[target[0]][target[1]].first = False

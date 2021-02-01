@@ -51,6 +51,15 @@ def draw(screen, g, selected, moves):
     else:
       pygame.draw.rect(screen, RED, pygame.Rect(pos[1]*BLOCK, pos[0]*BLOCK, BLOCK, BLOCK), 2)
 
+  # Check
+  if g.state != 0:
+    if g.state > 0:
+      c = 'B'
+    else:
+      c = 'W'
+
+    king = g.getKing(c)
+    pygame.draw.rect(screen, RED, pygame.Rect(king.pos[1]*BLOCK, king.pos[0]*BLOCK, BLOCK, BLOCK), 2)
 
 ## Game loop
 running = True
