@@ -63,7 +63,8 @@ while running:
 
           if selected is None:
             c, r = pos[0]//BLOCK, pos[1]//BLOCK
-            selected = (r, c)
+            if g.board[r][c] is not None and g.board[r][c].color == color:
+              selected = (r, c)
           else:
             selected = None
 
