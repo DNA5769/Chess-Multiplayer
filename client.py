@@ -22,7 +22,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Chess Multiplayer")
 clock = pygame.time.Clock()     ## For syncing the FPS
 
-def draw(screen, g):
+def draw(screen, g, selected):
   # Draws board
   for i in range(8):
     block_color_pointer = i%2
@@ -39,10 +39,16 @@ def draw(screen, g):
         picture = pygame.transform.scale(picture, (BLOCK, BLOCK))
 
         screen.blit(picture, (piece.pos[1]*BLOCK, piece.pos[0]*BLOCK))
+  
+  # Selection Box
+  if selected is not None:
+    pygame.draw.rect(screen, RED, pygame.Rect(selected[1]*BLOCK, selected[0]*BLOCK, BLOCK, BLOCK), 2)
 
 ## Game loop
 running = True
 g = Game()
+color = 'W'
+selected = None
 while running:
     #1 Process input/events
     clock.tick(FPS)     ## will make the loop run at the same speed all the time
@@ -51,10 +57,20 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+        # handle MOUSEBUTTONDOWN
+        if event.type == pygame.MOUSEBUTTONDOWN:
+          pos = pygame.mouse.get_pos()
+
+          if selected is None:
+            c, r = pos[0]//BLOCK, pos[1]//BLOCK
+            selected = (r, c)
+          else:
+            selected = None
+
     #2 Draw/render
     screen.fill(BLACK)
 
-    draw(screen, g)
+    draw(screen, g, selected)
 
     pygame.display.update()       
 
