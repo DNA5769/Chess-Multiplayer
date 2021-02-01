@@ -14,19 +14,6 @@ class King:
       posc = c+x
 
       if 0 <= posr <= 7 and 0 <= posc <= 7 and (board[posr][posc] is None or board[posr][posc].color != self.color):
-        check = True
-
-        for row in board:
-          for piece in row:
-            if piece is not None and piece.color != self.color and type(piece) != King:
-              if (posr, posc) in piece.getPossibleMoves(board):
-                check = False
-                break
-
-          if not check:
-            break
-
-        if check:
-          moves.append((posr, posc))
+        moves.append((posr, posc))
 
     return moves
