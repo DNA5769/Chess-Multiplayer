@@ -42,11 +42,14 @@ def draw(screen, g, selected, moves):
   
   # Selection Box
   if selected is not None:
-    pygame.draw.rect(screen, RED, pygame.Rect(selected[1]*BLOCK, selected[0]*BLOCK, BLOCK, BLOCK), 2)
+    pygame.draw.rect(screen, BLUE, pygame.Rect(selected[1]*BLOCK, selected[0]*BLOCK, BLOCK, BLOCK), 2)
 
   # Moves
   for pos in moves:
-    pygame.draw.rect(screen, BLUE, pygame.Rect(pos[1]*BLOCK, pos[0]*BLOCK, BLOCK, BLOCK), 2)
+    if g.board[pos[0]][pos[1]] is None:
+      pygame.draw.circle(screen, BLUE, (pos[1]*BLOCK+BLOCK//2, pos[0]*BLOCK+BLOCK//2), 5)
+    else:
+      pygame.draw.rect(screen, RED, pygame.Rect(pos[1]*BLOCK, pos[0]*BLOCK, BLOCK, BLOCK), 2)
 
 
 ## Game loop
