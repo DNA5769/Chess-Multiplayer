@@ -1,5 +1,6 @@
 import pygame
 import random
+from Game import Game
 
 WIDTH = HEIGHT = 400
 BLOCK = WIDTH//8
@@ -11,6 +12,7 @@ BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+BLOCK_COLORS = (WHITE, BLACK)
 
 ## initialize pygame and create window
 pygame.init()
@@ -20,7 +22,12 @@ pygame.display.set_caption("Chess Multiplayer")
 clock = pygame.time.Clock()     ## For syncing the FPS
 
 def draw(screen):
-  pass
+  # Draws board
+  for i in range(8):
+    block_color_pointer = i%2
+    for j in range(8):
+      pygame.draw.rect(screen, BLOCK_COLORS[block_color_pointer], pygame.Rect(i*BLOCK, j*BLOCK, BLOCK, BLOCK))
+      block_color_pointer = (block_color_pointer+1)%2 
 
 ## Game loop
 running = True
